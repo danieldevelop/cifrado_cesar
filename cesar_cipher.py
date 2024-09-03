@@ -5,37 +5,30 @@ Created by: Daniel Gómez
 Email: dgomez.informatica@gmail.com
 """
 
-def cesar_cipher(letra, mode = "cifrar"):
-    dic = {
-        'a': 'd', 'b': 'e', 'c': 'f', 'd': 'g', 'e': 'h',
-        'f': 'i', 'g': 'j', 'h': 'k', 'i': 'l', 'j': 'm',
-        'k': 'n', 'l': 'o', 'm': 'p', 'n': 'q', 'o': 'r',
-        'p': 's', 'q': 't', 'r': 'u', 's': 'v', 't': 'w',
-        'u': 'x', 'v': 'y', 'w': 'z', 'x': 'a', 'y': 'b',
-        'z': 'c'
-    }
+def cesar_cipher(texto, llave):
+    """
+    Cifra o descrifra un texto usando el algoritmo de Cifrado Cesar
+    :param texto: str
+    :param llave: int
+    :return: str
+    """
+    resultado = ""
+    for i in range(len(texto)):
+        char = texto[i]
+        if char.isupper():
+            resultado += chr((ord(char) + llave - 65) % 26 + 65)
+        elif char.islower():
+            resultado += chr((ord(char) + llave - 97) % 26 + 97)
+        else:
+            resultado += char
+    return resultado
 
-    # Dicionario inverso para descriptar
-    dic_inv = {v: k for k, v in dic.items()}
-
-    if mode == "cifrar":
-        return dic.get(letra, letra)
-    elif mode == "descifrar":
-        return dic_inv.get(letra, letra)
-    
-    return "Modo no válido"
 
 
 if __name__ == "__main__":
-    texto = input("Ingrese un texto u frase cualquiera: ").lower()
+    texto = input("Ingrese un texto u frase cualquiera: ")
+    llave = 3 # Clave de cifrado de desplazamiento
 
-    texto_cifrado = ""
-    for letra in texto:
-        texto_cifrado += cesar_cipher(letra, mode = "cifrar")
-
-    texto_descifrado = ""
-    for letra in texto_cifrado:
-        texto_descifrado += cesar_cipher(letra, mode = "descifrar")
-
-    print("Texto cifrado: ", texto_cifrado)
-    print("Texto descifrado: ", texto_descifrado)
+    
+    print(f"Texto cifrado: {cesar_cipher(texto, llave)}")
+    print(f"Texto descifrado: {cesar_cipher(cesar_cipher(texto, llave), -llave)}")
